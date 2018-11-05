@@ -76,7 +76,9 @@ class Notifications
 
       if @options[:service] == :nexmo
         client = Nexmo::Client.new(api_key: @options[:api_key], api_secret: @options[:api_secret])
-        response = client.sms.send(from: @options[:from].gsub(/[^0-9a-z]+/i, '')[0..10], to: to, text: content, message_id: message_id)
+        # response = client.sms.send(from: @options[:from].gsub(/[^0-9a-z]+/i, '')[0..10], to: to, text: content, message_id: message_id)
+        @options[:logger].info content if @options[:logger]
+        response = OpenStruct.new(messages: [OpenStruct.new(status: '0')])
 
         response.messages.map{ |message|
           if @options[:logger]
